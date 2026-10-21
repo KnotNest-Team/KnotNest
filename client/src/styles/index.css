@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :focus-visible { outline: 2px solid #B8894A; outline-offset: 2px; }
+}
+
+/* Dashboard form + table primitives, composed with Tailwind */
+@layer components {
+  .kn-input { @apply w-full rounded-lg border border-ink/15 bg-white px-3.5 py-2.5 font-sans text-sm text-ink placeholder:text-muted/70 transition focus:border-maroon focus:outline-none focus:ring-2 focus:ring-maroon/15 disabled:bg-ivory/60; }
+  .kn-label { @apply mb-1.5 block font-sans text-xs font-medium tracking-wide text-ink-2; }
+  .kn-scroll { scrollbar-width: thin; scrollbar-color: rgba(26,20,20,.25) transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+
+/* ---- themed invitation animations (RSVP pages) ---- */
+@keyframes kn-sway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+@keyframes kn-fall { 0% { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translate3d(40px, 110vh, 0) rotate(320deg); opacity: 0; } }
+@keyframes kn-flicker { 0%, 100% { opacity: 1; transform: scale(1); } 40% { opacity: .82; transform: scale(.96, 1.04); } 70% { opacity: .95; transform: scale(1.03, .97); } }
+@keyframes kn-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes kn-spin { to { transform: rotate(360deg); } }
+.kn-spin { animation: kn-spin 140s linear infinite; }
+@keyframes kn-shimmer { 0%, 100% { opacity: 1; } 50% { opacity: .78; } }
+.kn-sway { animation: kn-sway 4s ease-in-out infinite; }
+.kn-fall { top: -5%; animation: kn-fall 11s linear infinite; }
+.kn-flicker { animation: kn-flicker 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center bottom; }
+.kn-float { animation: kn-float 6s ease-in-out infinite; }
+.kn-shimmer { animation: kn-shimmer 5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .kn-sway, .kn-fall, .kn-flicker, .kn-float, .kn-shimmer, .kn-spin { animation: none !important; } .kn-fall { display: none; } }
