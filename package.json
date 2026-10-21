@@ -1,0 +1,23 @@
+{
+  "name": "knotnest",
+  "version": "1.6.0",
+  "private": true,
+  "description": "KnotNest - Indian wedding planning platform and vendor marketplace (MERN)",
+  "type": "module",
+  "engines": {
+    "node": ">=18.12"
+  },
+  "scripts": {
+    "postinstall": "npm install --prefix server && npm install --prefix client && node scripts/setup-env.js",
+    "setup": "node scripts/setup-env.js",
+    "dev": "node scripts/dev.js",
+    "server": "node scripts/setup-env.js && npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "seed": "node scripts/setup-env.js && npm run seed --prefix server",
+    "test": "node server/tests/pricing.unit.test.js && node server/tests/smoke.test.js",
+    "build": "npm run build --prefix client",
+    "start": "npm start --prefix server",
+    "test:unit": "node server/tests/pricing.unit.test.js",
+    "test:api": "node server/tests/smoke.test.js"
+  }
+}
