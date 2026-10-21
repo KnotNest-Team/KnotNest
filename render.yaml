@@ -1,0 +1,47 @@
+# Render Blueprint: one web service that runs the API and serves the built React app.
+# Render dashboard > New > Blueprint > pick this repo. Then fill in the "sync: false" values.
+services:
+  - type: web
+    name: knotnest
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "20"
+      - key: MONGOMS_DISABLE_POSTINSTALL   # don't download the embedded dev database during the build
+        value: "1"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGO_URI                     # MongoDB Atlas connection string
+        sync: false
+      - key: CLIENT_URL                    # your Render URL, e.g. https://knotnest.onrender.com
+        sync: false
+      - key: PUBLIC_APP_URL                # same as CLIENT_URL (used in RSVP links)
+        sync: false
+      - key: STORAGE_PROVIDER              # Render's disk is wiped on every deploy, so keep uploads on Cloudinary
+        value: cloudinary
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
