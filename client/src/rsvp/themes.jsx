@@ -1,0 +1,117 @@
+import { Elephant, Peacock, Toran, Lanterns, Diya, BananaLeaf, Dandiya, Dhol, Shankha, Lotus, Dove, Bells, Branch, Mandala, PATTERNS } from './art';
+
+/**
+ * Invitation themes. Each tradition maps to one (couples can also pick another on My Wedding).
+ * colors: page = below the hero, hero/hero2 = hero gradient, primary = buttons, accent = ornaments.
+ */
+const marigold = (leaf = '#2e7d32') => <Toran flower="#f39c12" flower2="#f7c948" leaf={leaf} string="#7a4a1a" className="h-16 w-full sm:h-24" />;
+
+export const THEMES = {
+  royal: {
+    name: 'Royal Rajasthani', blurb: 'Palace arches, decorated elephants and marigold torans in maroon and gold',
+    greeting: 'Shubh Vivah',
+    colors: { page: '#f7eedf', hero: '#4a0f1a', hero2: '#7a1f2b', heroInk: '#fbf3e4', heroMuted: '#e9cfa6', primary: '#7a1f2b', primaryInk: '#fbf3e4', accent: '#d9b46a', card: '#fffaf1', cardBorder: '#e5c992', ink: '#2a1a14', muted: '#7a6455', tile: '#fbefd9' },
+    pattern: PATTERNS.paisley('#d9b46a'), patternOpacity: 0.16,
+    garland: marigold(),
+    side: <Elephant body="#cdb79b" shade="#a88f72" cloth="#b8322a" gold="#e2c27d" />, sideSize: 'w-36 sm:w-56 lg:w-72',
+    backdrop: <Mandala a="#d9b46a" b="#d9b46a" c="#d9b46a" />,
+    divider: <Mandala a="#d9b46a" b="#c0392b" className="h-10 w-10" />,
+    petals: ['#f39c12', '#f7c948', '#c0392b'],
+    icon: <Mandala a="#d9b46a" b="#7a1f2b" className="h-7 w-7" />,
+  },
+  gujarati: {
+    name: 'Gujarati Bandhani', blurb: 'Bandhani dots, dandiya sticks and festive red, yellow and green',
+    greeting: 'Shubh Lagna',
+    colors: { page: '#fff6e5', hero: '#9e0f26', hero2: '#c8102e', heroInk: '#fff8e8', heroMuted: '#ffe2a6', primary: '#b3122e', primaryInk: '#fff8e8', accent: '#f2b705', card: '#ffffff', cardBorder: '#f4c95d', ink: '#2b1a12', muted: '#7d6252', tile: '#fff1cc' },
+    pattern: PATTERNS.bandhani('#fff2c4'), patternOpacity: 0.32,
+    garland: marigold('#1e7b3c'),
+    side: <Dandiya stick="#f2b705" band="#1e7b3c" mirror="#ffffff" tassel="#f39c12" />, sideSize: 'w-28 sm:w-44 lg:w-52',
+    backdrop: <Mandala a="#fff2c4" b="#f2b705" c="#fff2c4" />,
+    divider: <Mandala a="#f2b705" b="#1e7b3c" className="h-10 w-10" />,
+    petals: ['#f2b705', '#ffffff', '#f39c12'],
+    icon: <Dandiya stick="#b3122e" band="#f2b705" mirror="#fff" tassel="#1e7b3c" className="h-7 w-7" />,
+  },
+  marathi: {
+    name: 'Marathi Paithani', blurb: 'Paithani purple and gold with dancing peacocks and lotus',
+    greeting: 'Shubh Mangal Saavdhan',
+    colors: { page: '#f6f0e6', hero: '#3a1450', hero2: '#5b2178', heroInk: '#fbf3e4', heroMuted: '#e8cf8b', primary: '#5b2178', primaryInk: '#fbf3e4', accent: '#d4a72c', card: '#fffdf8', cardBorder: '#dcc07a', ink: '#24152b', muted: '#6e5d72', tile: '#f4ecd9' },
+    pattern: PATTERNS.paithani('#d4a72c'), patternOpacity: 0.18,
+    garland: marigold('#1f6f5c'),
+    side: <Peacock body="#13527a" neck="#1a8f9e" tail="#1f6f5c" eye="#0e3d6b" gold="#d4a72c" />, sideSize: 'w-40 sm:w-60 lg:w-80',
+    divider: <Lotus petal="#e8467c" inner="#f7c3d6" leaf="#1f6f5c" className="h-10 w-14" />,
+    petals: ['#d4a72c', '#e8467c', '#f7c948'],
+    icon: <Lotus petal="#5b2178" inner="#d4a72c" leaf="#1f6f5c" className="h-7 w-9" />,
+  },
+  punjabi: {
+    name: 'Punjabi Phulkari', blurb: 'Phulkari embroidery, dhol beats and bright marigold',
+    greeting: 'Shagna Di Ghadi',
+    colors: { page: '#fff4ec', hero: '#8a1430', hero2: '#b81d3f', heroInk: '#fff6ea', heroMuted: '#ffd27a', primary: '#a3122a', primaryInk: '#fff6ea', accent: '#f6a623', card: '#ffffff', cardBorder: '#f7b955', ink: '#2c1616', muted: '#7d5a52', tile: '#ffe9c9' },
+    pattern: PATTERNS.phulkari('#f6a623'), patternOpacity: 0.28,
+    garland: marigold('#2e7d32'),
+    side: <Dhol shell="#4a0b1a" head="#f5e6c8" rope="#f6a623" />, sideSize: 'w-32 sm:w-48 lg:w-56',
+    backdrop: <Mandala a="#f6a623" b="#e8467c" c="#f6a623" />,
+    divider: <Mandala a="#f6a623" b="#e8467c" className="h-10 w-10" />,
+    petals: ['#f6a623', '#e8467c', '#f7c948'],
+    icon: <Dhol shell="#a3122a" head="#fff3dc" rope="#f6a623" className="h-7 w-10" />,
+  },
+  south: {
+    name: 'South Indian Temple', blurb: 'Temple gold and green, banana leaves, kolam and brass lamps',
+    greeting: 'Subha Muhurtham',
+    colors: { page: '#fbf6e9', hero: '#0d3527', hero2: '#16523b', heroInk: '#fbf3e0', heroMuted: '#e7c873', primary: '#8a1c1c', primaryInk: '#fff7e6', accent: '#d4a537', card: '#fffdf6', cardBorder: '#d9be72', ink: '#1c2a20', muted: '#5f6b5c', tile: '#f6edd2' },
+    pattern: PATTERNS.kolam('#e7c873'), patternOpacity: 0.2,
+    backdrop: <Mandala a="#e7c873" b="#e7c873" c="#e7c873" />,
+    garland: marigold('#2f7d32'),
+    side: <div className="flex items-end"><BananaLeaf leaf="#2f7d32" vein="#a5d6a7" className="h-48 sm:h-72 lg:h-80" /><Diya clay="#c27c2c" rim="#e7c873" className="-ml-6 w-16 sm:w-24" /></div>, sideSize: '',
+    divider: <Diya clay="#c27c2c" rim="#d4a537" className="h-10 w-12" />,
+    petals: ['#f7c948', '#ffffff', '#f39c12'],
+    icon: <Diya clay="#8a1c1c" rim="#d4a537" className="h-7 w-8" />,
+  },
+  bengali: {
+    name: 'Bengali Alpana', blurb: 'Red and white alpana, conch shells and lotus',
+    greeting: 'Shubho Bibaho',
+    colors: { page: '#fff8f3', hero: '#8f0f12', hero2: '#b71c1c', heroInk: '#fff9f2', heroMuted: '#ffd9c2', primary: '#b71c1c', primaryInk: '#fff9f2', accent: '#ffffff', card: '#ffffff', cardBorder: '#efb3a8', ink: '#2a1212', muted: '#7d5552', tile: '#fde9e3' },
+    pattern: PATTERNS.alpana('#ffffff'), patternOpacity: 0.16,
+    backdrop: <Mandala a="#ffffff" b="#ffffff" c="#ffffff" />,
+    garland: <Toran flower="#ffffff" flower2="#f7c948" leaf="#2e7d32" string="#ffffff" className="h-16 w-full sm:h-24" />,
+    side: <div className="grid justify-items-center"><Lotus petal="#ffffff" inner="#ffd5d5" leaf="#2e7d32" className="w-28 sm:w-40" /><Shankha shell="#fff8f0" line="#8f0f12" className="w-28 sm:w-40" /></div>, sideSize: '',
+    divider: <Shankha shell="#fff" line="#b71c1c" className="h-9 w-12" />,
+    petals: ['#ffffff', '#f7c948', '#ffd5d5'],
+    icon: <Shankha shell="#fff" line="#b71c1c" className="h-7 w-9" />,
+  },
+  nikah: {
+    name: 'Emerald Nikah', blurb: 'Glowing lanterns and geometric jaali in emerald and gold',
+    greeting: 'Shaadi Mubarak',
+    colors: { page: '#f5f2ea', hero: '#06281f', hero2: '#0b4f3c', heroInk: '#f6f0dc', heroMuted: '#e3cc85', primary: '#0b4f3c', primaryInk: '#f6f0dc', accent: '#c9a646', card: '#fffdf7', cardBorder: '#d8c38a', ink: '#14231d', muted: '#5c6a63', tile: '#efe8d4' },
+    pattern: PATTERNS.jaali('#c9a646'), patternOpacity: 0.16,
+    garland: <Lanterns metal="#c9a646" glow="#ffd98a" className="h-28 w-full sm:h-40" />,
+    side: null, sideSize: '',
+    divider: <svg viewBox="0 0 60 40" className="h-8 w-12" aria-hidden="true"><g fill="none" stroke="#c9a646" strokeWidth="2"><rect x="20" y="10" width="20" height="20" /><rect x="20" y="10" width="20" height="20" transform="rotate(45 30 20)" /></g></svg>,
+    petals: ['#c9a646', '#ffffff', '#e3cc85'],
+    icon: <svg viewBox="0 0 40 40" className="h-7 w-7" aria-hidden="true"><g fill="none" stroke="#0b4f3c" strokeWidth="2"><rect x="11" y="11" width="18" height="18" /><rect x="11" y="11" width="18" height="18" transform="rotate(45 20 20)" /></g><circle cx="20" cy="20" r="3" fill="#c9a646" /></svg>,
+  },
+  christian: {
+    name: 'Ivory Chapel', blurb: 'Soft ivory and blush with doves, bells and florals',
+    greeting: 'Together in Love',
+    colors: { page: '#fbf8f3', hero: '#f6efe6', hero2: '#efe3d6', heroInk: '#3b2f2a', heroMuted: '#9a7d68', primary: '#8c5a50', primaryInk: '#fffaf5', accent: '#c9a646', card: '#ffffff', cardBorder: '#ead8c9', ink: '#2f2622', muted: '#7d6b62', tile: '#f7ece4' },
+    pattern: PATTERNS.florals('#d9a5a0'), patternOpacity: 0.25,
+    garland: <div className="flex justify-center pt-4"><Bells metal="#c9a646" bow="#d9a5a0" className="h-16 sm:h-24" /></div>,
+    side: <Dove body="#ffffff" line="#b9a07a" />, sideSize: 'w-28 sm:w-40 lg:w-48',
+    divider: <Branch stem="#8da48a" leaf="#b9c8b4" className="h-9 w-14" />,
+    petals: ['#e8c3bd', '#ffffff', '#f3d9c8'],
+    icon: <Bells metal="#c9a646" bow="#d9a5a0" className="h-7 w-10" />,
+  },
+  modern: {
+    name: 'Modern Botanical', blurb: 'Clean, airy and minimal with sage leaves',
+    greeting: 'Join us',
+    colors: { page: '#f7f6f1', hero: '#eef0e8', hero2: '#e3e8dc', heroInk: '#26302a', heroMuted: '#6c7a6f', primary: '#2d3a2e', primaryInk: '#f7f6f1', accent: '#c46a4a', card: '#ffffff', cardBorder: '#dde3d6', ink: '#202822', muted: '#6c766d', tile: '#eef1ea' },
+    pattern: PATTERNS.dots('#9fb39a'), patternOpacity: 0.5,
+    garland: null,
+    side: <Branch stem="#5b6b55" leaf="#9fb39a" />, sideSize: 'w-36 sm:w-52 lg:w-64',
+    divider: <svg viewBox="0 0 80 10" className="h-3 w-20" aria-hidden="true"><path d="M0 5 H34 M46 5 H80" stroke="#c46a4a" strokeWidth="1.5" /><circle cx="40" cy="5" r="3" fill="#c46a4a" /></svg>,
+    petals: [],
+    icon: <Branch stem="#5b6b55" leaf="#9fb39a" className="h-7 w-9" />,
+  },
+};
+
+export const THEME_ORDER = ['royal', 'gujarati', 'marathi', 'punjabi', 'south', 'bengali', 'nikah', 'christian', 'modern'];
+export const themeOf = (key) => THEMES[key] || THEMES.royal;
