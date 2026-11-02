@@ -1,4 +1,4 @@
- #Deploying KnotNest
+# Deploying KnotNest
 
 KnotNest runs live at **https://knotnest.onrender.com** as a single [Render](https://render.com) web service. The service runs the Express API and also serves the built React app, so the whole site uses one URL and needs no CORS setup.
 
@@ -93,6 +93,10 @@ The Render **Shell** is not available on the free plan, so seed Atlas from your 
 
 Every commit pushed to `main` on `KnotNest-Team/KnotNest` rebuilds and redeploys the site automatically. To redeploy without a new commit, use **Manual Deploy → Deploy latest commit** in Render.
 
+For changes that do not affect the website (documentation only), add `[skip render]` to the commit message and Render will not redeploy.
+
+If a build fails, Render keeps the previous version running. If a deploy goes live but something is broken, open **Deploys** in Render and click **Rollback** on the last good deploy.
+
 Use a branch and a pull request for every change, so `main` only gets reviewed code:
 
 ```bash
@@ -116,12 +120,3 @@ git push -u origin feature/short-name
 | Uploaded photos disappear after a deploy | Files were saved on Render's disk | `STORAGE_PROVIDER=cloudinary` with all three Cloudinary keys set |
 | RSVP links in emails open `localhost` | `PUBLIC_APP_URL` not set | Set it to `https://knotnest.onrender.com` and redeploy |
 | First page load takes ~50 seconds | Free instance sleeps after 15 minutes idle | Expected. Open the site once before a demo or viva |
-
----
-
-## Alternative: Vercel (website) + Render (API)
-
-Use this setup only if the website must be hosted separately:
-
-- **Render (API):** deploy as above, but set `CLIENT_URL` and `PUBLIC_APP_URL` to the Vercel URL.
-- **Vercel (website):** import the repo with **Root Directory `client`** (`client/vercel.json` adds the single-page-app rewrite). Set `VITE_API_URL` and `VITE_API_ORIGIN` to the Render API URL, then redeploy, because Vite bakes these values in at build time.
