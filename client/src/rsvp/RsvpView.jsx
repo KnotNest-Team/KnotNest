@@ -19,7 +19,6 @@ function Stepper({ value, max, onChange, label, c }) {
     </div>
   );
 }
-
 /**
  * The guest-facing invitation and RSVP, drawn in the wedding's theme.
  * data: response of GET /rsvp/:token (or the couple's preview). onSubmit(payload) -> new data. preview: no submitting.
