@@ -1,41 +1,127 @@
-# Deploying KnotNest
+ #Deploying KnotNest
 
-Two ways. **Option A** is simplest: one Render service runs the API and serves the website, so there is one URL and no CORS setup. **Option B** splits the website (Vercel) and the API (Render).
+KnotNest runs live at **https://knotnest.onrender.com** as a single [Render](https://render.com) web service. The service runs the Express API and also serves the built React app, so the whole site uses one URL and needs no CORS setup.
 
-Whichever you pick, set these up first:
+```
+GitHub (KnotNest-Team/KnotNest, branch main)
+        │  every push to main triggers a deploy
+        ▼
+Render web service "knotnest"  ── build: npm install --include=dev && npm run build
+        │                         start: npm start   (serves /api + the React pages)
+        ├──► MongoDB Atlas   database (MONGO_URI)
+        ├──► Cloudinary      uploaded photos (Render's disk is wiped on every deploy)
+        └──► Brevo SMTP      invitation emails, port 2525
+```
 
-1. **MongoDB Atlas** (free M0 cluster): create a database user, allow access from anywhere (`0.0.0.0/0`, Render's IPs change), and copy the connection string, e.g. `mongodb+srv://knotnest:<password>@cluster0.xxxxx.mongodb.net/knotnest`.
-2. **Cloudinary** (free): copy cloud name, API key and API secret. Render's disk is wiped on every deploy, so uploaded photos must live on Cloudinary.
-3. **SMTP** for invitation emails, e.g. **Brevo** (free, 300 emails/day): Settings > SMTP & API gives `smtp-relay.brevo.com`, port `587`, your login and an SMTP key. Verify the sender address you will use in `MAIL_FROM`.
-   Gmail also works for small lists: turn on 2-step verification, create an App Password, and use `smtp.gmail.com`, port `465`.
-4. **Razorpay test keys** (optional): dashboard in Test Mode > Settings > API Keys. Without keys, production disables the payment button with a clear message (simulated payments exist only in development).
+All passwords and keys live only in Render's environment variables. Nothing secret is committed to GitHub.
 
-## Option A: one Render service (recommended)
+---
 
-1. Push the project to GitHub (the `.gitignore` already excludes `.env`, `node_modules`, `dist`, uploads and the dev database).
-2. Render > **New > Blueprint** > choose the repo. Render reads `render.yaml`.
-3. Fill in the values marked "sync: false":
-   - `MONGO_URI`: the Atlas string
-   - `CLIENT_URL` and `PUBLIC_APP_URL`: your service URL, e.g. `https://knotnest.onrender.com`
-   - `CLOUDINARY_*`, `SMTP_*`, `MAIL_FROM`, `RAZORPAY_*`
-4. Deploy. The build runs `npm install && npm run build`; the start command runs the API, which also serves the built React app.
-5. Load the demo data once (optional): Render > your service > **Shell**: `npm run seed`.
-6. Check `https://<your-app>.onrender.com/api/health`, log in with the demo accounts, then send one invitation to your own email and open the RSVP link on your phone.
+## 1. Set up the cloud services
 
-## Option B: Vercel (website) + Render (API)
+### MongoDB Atlas (database)
+1. Create a free **M0** cluster.
+2. **Database Access:** add a database user with a password.
+3. **Network Access:** allow `0.0.0.0/0`, because Render's IP addresses change.
+4. **Connect → Drivers:** copy the connection string, insert the password and add `/knotnest` as the database name:
+   `mongodb+srv://<user>:<password>@<cluster>.mongodb.net/knotnest`
 
-**API on Render**: same as Option A, but set
-- `CLIENT_URL` = your Vercel URL, e.g. `https://knotnest.vercel.app` (CORS)
-- `PUBLIC_APP_URL` = the same Vercel URL (RSVP links in emails must open the website, not the API)
+### Cloudinary (image storage)
+1. Create a free account.
+2. **Settings → API Keys:** copy the **Cloud name**, **API Key** and **API Secret**.
 
-**Website on Vercel**: New Project > import the repo > **Root Directory: `client`** (Vite is detected; `client/vercel.json` adds the single-page-app rewrite). Environment variables:
-- `VITE_API_URL` = `https://<your-api>.onrender.com`
-- `VITE_API_ORIGIN` = `https://<your-api>.onrender.com` (for images stored on the API)
+### Brevo (invitation emails)
+1. Create a free account (300 emails/day) and verify your phone number.
+2. **Settings → SMTP & API → SMTP:** note the server `smtp-relay.brevo.com` and your SMTP login, then **generate an SMTP key**. This key is the SMTP password.
+3. **Settings → Senders, domains, IPs:** add the sender address you will use in `MAIL_FROM` and click the verification link Brevo sends to it.
 
-Redeploy the website after changing these, because Vite bakes them in at build time.
+> **Use port 2525, not 587.** Render's free plan blocks outgoing SMTP on ports 25, 465 and 587, so Gmail (465) and Brevo's default port (587) time out. Brevo also accepts 2525, which Render allows. Nodemailer uses STARTTLS on 2525 automatically, so no code change is needed. `render.yaml` already sets `SMTP_PORT=2525`.
 
-## After deploying
+> A Gmail sender address works, but Brevo warns that free email domains are "not recommended". Mail is then sent through Brevo's own domain and may land in spam. For better delivery, use a sender on a domain you own.
 
-- Change the demo passwords or delete the demo accounts before sharing the link publicly.
-- Render's free plan sleeps after 15 minutes without traffic; the first request then takes up to a minute. Open the site once before a demo or viva.
-- Moving from Razorpay test to live mode needs a verified account, live keys, and ideally a payment webhook.
+---
+
+## 2. Deploy on Render
+
+1. Sign in to Render with GitHub. Click **New → Blueprint**, install the Render GitHub app on the **KnotNest-Team** organisation, and choose the **KnotNest** repository (branch `main`).
+2. Render reads [`render.yaml`](render.yaml). Fill in the values it asks for:
+
+| Variable | Value | Purpose |
+|---|---|---|
+| `NODE_ENV` | `production` (preset) | Production mode |
+| `JWT_SECRET` | generated by Render | Signs login tokens |
+| `MONGO_URI` | Atlas connection string | Database |
+| `CLIENT_URL` | `https://knotnest.onrender.com` | Allowed website origin (CORS) |
+| `PUBLIC_APP_URL` | `https://knotnest.onrender.com` | Base URL of RSVP links in emails |
+| `STORAGE_PROVIDER` | `cloudinary` (preset) | Store uploads on Cloudinary |
+| `CLOUDINARY_CLOUD_NAME` / `_API_KEY` / `_API_SECRET` | from Cloudinary | Image storage |
+| `SMTP_HOST` | `smtp-relay.brevo.com` | Brevo SMTP server |
+| `SMTP_PORT` | `2525` (preset) | Port Render does not block |
+| `SMTP_USER` | your Brevo SMTP login | SMTP login |
+| `SMTP_PASS` | your Brevo SMTP key | SMTP password |
+| `MAIL_FROM` | `KnotNest Invitations <verified-sender@example.com>` | Sender shown to guests |
+| `RAZORPAY_KEY_ID` / `_SECRET` | leave empty, or Razorpay **test** keys | Online advance payments (the button is disabled when empty) |
+
+3. Click **Deploy Blueprint**. The first build takes a few minutes, and the status then changes to **Live**.
+
+---
+
+## 3. Load the demo data (optional)
+
+The Render **Shell** is not available on the free plan, so seed Atlas from your own computer:
+
+1. In `server/.env`, temporarily set `MONGO_URI` to the Atlas connection string.
+2. Run `npm run seed`.
+3. Put your local `MONGO_URI` back afterwards.
+
+> ⚠️ `npm run seed` **deletes all existing data** in that database before inserting the demo data. Never run it against the live database once real users have signed up.
+
+> ⚠️ The demo account passwords are in the public seed file. After seeding the live site, sign in as the demo admin and **change its password** (or delete the demo accounts), or anyone could open the admin panel.
+
+---
+
+## 4. Verify the deployment
+
+1. **Health check:** https://knotnest.onrender.com/api/health returns `{"status":"ok", ...}`.
+2. Open the home, registration and vendors pages. Vendor cards and images load from Atlas and Cloudinary.
+3. **Email test:** sign in as a customer, open **Guests & RSVP**, add a guest with your own email address and send the invitation. The status changes to **Sent**.
+4. Open the email (check spam too). Follow the RSVP link, answer for each event and submit. The answer then shows on the couple's Guests page.
+
+---
+
+## 5. Updating the live site
+
+Every commit pushed to `main` on `KnotNest-Team/KnotNest` rebuilds and redeploys the site automatically. To redeploy without a new commit, use **Manual Deploy → Deploy latest commit** in Render.
+
+Use a branch and a pull request for every change, so `main` only gets reviewed code:
+
+```bash
+git checkout -b feature/short-name
+# ...make changes...
+git add . && git commit -m "Describe the change"
+git push -u origin feature/short-name
+# open a pull request on GitHub, review, then merge into main
+```
+
+---
+
+## Troubleshooting
+
+| Problem | Cause | Fix |
+|---|---|---|
+| Build fails with `vite: not found` / "Exited with status 127" | `NODE_ENV=production` makes npm skip devDependencies, and Vite is a devDependency of the client | Build command must be `npm install --include=dev && npm run build` (already in `render.yaml`; also check **Settings → Build Command** in Render) |
+| Invitations stay unsent; logs show `ETIMEDOUT` / `Connection timeout` | SMTP port 587 or 465 is blocked on Render's free plan | Set `SMTP_PORT=2525` with Brevo |
+| Brevo rejects the email with an auth error | Wrong login or key | `SMTP_USER` is the SMTP **login** shown by Brevo (not your account email); `SMTP_PASS` is the **SMTP key** (not your Brevo password) |
+| `MongoServerError: bad auth` or the server cannot connect | Wrong password in `MONGO_URI`, or IP not allowed | Recheck the user and password (URL-encode special characters) and allow `0.0.0.0/0` in Atlas |
+| Uploaded photos disappear after a deploy | Files were saved on Render's disk | `STORAGE_PROVIDER=cloudinary` with all three Cloudinary keys set |
+| RSVP links in emails open `localhost` | `PUBLIC_APP_URL` not set | Set it to `https://knotnest.onrender.com` and redeploy |
+| First page load takes ~50 seconds | Free instance sleeps after 15 minutes idle | Expected. Open the site once before a demo or viva |
+
+---
+
+## Alternative: Vercel (website) + Render (API)
+
+Use this setup only if the website must be hosted separately:
+
+- **Render (API):** deploy as above, but set `CLIENT_URL` and `PUBLIC_APP_URL` to the Vercel URL.
+- **Vercel (website):** import the repo with **Root Directory `client`** (`client/vercel.json` adds the single-page-app rewrite). Set `VITE_API_URL` and `VITE_API_ORIGIN` to the Render API URL, then redeploy, because Vite bakes these values in at build time.
