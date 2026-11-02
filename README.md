@@ -91,7 +91,7 @@ Open **http://localhost:5173**. If no local MongoDB is running, the server start
 
 | Name | Roll No. | Contribution |
 |---|---|---|
-| Samiksha Phirangi | 16010124241 | Documentation, deployment guide and testing |
+| Samiksha Phirangi | 16010124241 | Documentation, deployment guide and testing,Frontend design |
 | Sara Potdar | 16010124243 | Frontend: React client, customer, vendor and admin dashboards, RSVP views |
 | Amit Rambhia | 16010124249 | Backend: API, database models, services, tests and deployment config |
 
