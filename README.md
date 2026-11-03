@@ -9,6 +9,7 @@ A full-stack **MERN** wedding planning platform and vendor marketplace for India
 | 🌐 **Live website** | [knotnest.onrender.com](https://knotnest.onrender.com) |
 | 🎨 **Figma design** | [KnotNest – UI Design](https://www.figma.com/design/BQSgyygn4W5zYWVIL1rlxm/KnotNest-%E2%80%93-UI-Design) |
 | 📦 **Repository** | [github.com/KnotNest-Team/KnotNest](https://github.com/KnotNest-Team/KnotNest) |
+| 📄 **Project report** | [KnotNest Mini-Project Report (PDF)](https://drive.google.com/file/d/1KSbO2qqvehm0hxezpgyEW3e9JBgfpZdF/view?usp=sharing) |
 | 🚀 **Deployment guide** | [DEPLOYMENT.md](DEPLOYMENT.md) |
 
 > The site runs on Render's free plan and sleeps after 15 minutes without traffic. The first visit after that can take up to a minute to load.
@@ -36,32 +37,32 @@ A full-stack **MERN** wedding planning platform and vendor marketplace for India
 
 ```
 knotnest/
-├── client/                    # React frontend
-│   └── src/
-│       ├── admin/             # Admin dashboard pages
-│       ├── customer/          # Customer pages (wedding, guests, bookings, Plan & book)
-│       ├── vendor/            # Vendor dashboard pages
-│       ├── pages/             # Public pages (home, vendors, vendor profile, RSVP)
-│       ├── components/        # Shared UI components
-│       ├── context/           # Auth, toast and compare state
-│       ├── hooks/             # Custom React hooks
-│       ├── layouts/           # Public and dashboard layouts
-│       ├── routes/            # App routes and route guards
-│       ├── services/          # API client
-│       └── utils/             # Formatting and helpers
-├── server/                    # Express backend
-│   ├── config/                # Environment and database setup
-│   ├── controllers/           # Route handlers
-│   ├── middleware/            # Auth, uploads, errors
-│   ├── models/                # Mongoose schemas
-│   ├── routes/                # API routes
-│   ├── services/              # Business logic (pricing, availability, bookings, email)
-│   ├── seed/                  # Demo data
-│   ├── tests/                 # Unit and API tests
-│   └── server.js              # Entry point (also serves the built React app in production)
-├── scripts/                   # Dev and setup scripts
-├── render.yaml                # Render Blueprint
-├── DEPLOYMENT.md              # How the live site is deployed
+├── client/ # React frontend
+│ └── src/
+│ ├── admin/ # Admin dashboard pages
+│ ├── customer/ # Customer pages (wedding, guests, bookings, Plan & book)
+│ ├── vendor/ # Vendor dashboard pages
+│ ├── pages/ # Public pages (home, vendors, vendor profile, RSVP)
+│ ├── components/ # Shared UI components
+│ ├── context/ # Auth, toast and compare state
+│ ├── hooks/ # Custom React hooks
+│ ├── layouts/ # Public and dashboard layouts
+│ ├── routes/ # App routes and route guards
+│ ├── services/ # API client
+│ └── utils/ # Formatting and helpers
+├── server/ # Express backend
+│ ├── config/ # Environment and database setup
+│ ├── controllers/ # Route handlers
+│ ├── middleware/ # Auth, uploads, errors
+│ ├── models/ # Mongoose schemas
+│ ├── routes/ # API routes
+│ ├── services/ # Business logic (pricing, availability, bookings, email)
+│ ├── seed/ # Demo data
+│ ├── tests/ # Unit and API tests
+│ └── server.js # Entry point (also serves the built React app in production)
+├── scripts/ # Dev and setup scripts
+├── render.yaml # Render Blueprint
+├── DEPLOYMENT.md # How the live site is deployed
 └── package.json
 ```
 
@@ -72,8 +73,8 @@ Requires **Node.js 18+**.
 ```bash
 git clone https://github.com/KnotNest-Team/KnotNest.git
 cd KnotNest
-npm install          # installs server + client and creates server/.env
-npm run dev          # starts the API and the website
+npm install # installs server + client and creates server/.env
+npm run dev # starts the API and the website
 ```
 
 Open **http://localhost:5173**. If no local MongoDB is running, the server starts an embedded development database and fills it with demo data automatically. To use MongoDB Atlas instead, set `MONGO_URI` in `server/.env`.
@@ -91,7 +92,7 @@ Open **http://localhost:5173**. If no local MongoDB is running, the server start
 
 | Name | Roll No. | Contribution |
 |---|---|---|
-| Samiksha Phirangi | 16010124241 | Documentation, deployment guide and testing, frontend design |
+| Samiksha Phirangi | 16010124241 | Documentation, testing and customer tools (guest and budget export, About page) |
 | Sara Potdar | 16010124243 | Frontend: React client, customer, vendor and admin dashboards, RSVP views |
 | Amit Rambhia | 16010124249 | Backend: API, database models, services, tests and deployment config |
 
