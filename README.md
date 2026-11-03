@@ -12,6 +12,7 @@ A full-stack **MERN** wedding planning platform and vendor marketplace for India
 | 📄 **Project report** | [KnotNest Mini-Project Report (PDF)](https://drive.google.com/file/d/1KSbO2qqvehm0hxezpgyEW3e9JBgfpZdF/view?usp=sharing) |
 | 🚀 **Deployment guide** | [DEPLOYMENT.md](DEPLOYMENT.md) |
 
+
 > The site runs on Render's free plan and sleeps after 15 minutes without traffic. The first visit after that can take up to a minute to load.
 
 ## Features
@@ -92,7 +93,7 @@ Open **http://localhost:5173**. If no local MongoDB is running, the server start
 
 | Name | Roll No. | Contribution |
 |---|---|---|
-| Samiksha Phirangi | 16010124241 | Documentation, testing and customer tools (guest and budget export, About page) |
+| Samiksha Phirangi | 16010124241 | Documentation, testing and customer tools, frontend, database  |
 | Sara Potdar | 16010124243 | Frontend: React client, customer, vendor and admin dashboards, RSVP views |
 | Amit Rambhia | 16010124249 | Backend: API, database models, services, tests and deployment config |
 
