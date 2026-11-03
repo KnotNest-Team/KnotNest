@@ -29,7 +29,7 @@ services:
         sync: false
       - key: CLOUDINARY_API_KEY
         sync: false
-      - key: CLOUDINARY_API_SECRET
+      - key: CLOUDINARY_API_SECRET          #cloudinary 
         sync: false
       - key: SMTP_HOST
         sync: false
