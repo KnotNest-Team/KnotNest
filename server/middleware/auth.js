@@ -32,7 +32,7 @@ export const optionalAuth = asyncHandler(async (req, _res, next) => {
   if (token) { try { req.user = await load(token); } catch { /* ignore */ } }
   next();
 });
-
+//reqd role
 const requireRole = (...roles) => (req, _res, next) =>
   roles.includes(req.user?.role) ? next() : next(ApiError.forbidden());
 
