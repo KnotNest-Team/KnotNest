@@ -15,12 +15,14 @@ import ApiError from '../utils/ApiError.js';
 
 export const ymd = (d) => new Date(d).toISOString().slice(0, 10);
 const DAY_MIN = 24 * 60;
-const hhmm = (m) => `${((Math.floor(m / 60) + 11) % 12) + 1}:${String(m % 60).padStart(2, '0')} ${m < 720 ? 'AM' : 'PM'}`;
+// % 24: a slot end of 1440 is midnight (12:00 AM), not noon
+const hhmm = (m) => { const h = Math.floor(m / 60) % 24; return `${((h + 11) % 12) + 1}:${String(m % 60).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`; };
 
 /** "7:30 PM onwards" -> 1170 (minutes after midnight), or null when no time can be read. */
 export function startMinutes(t = '') {
   const m = /(\d{1,2})(?::(\d{2}))?\s*(AM|PM)/i.exec(t || '');
-  if (m) return ((Number(m[1]) % 12) + (m[3].toUpperCase() === 'PM' ? 12 : 0)) * 60 + Number(m[2] || 0);
+  // 12-hour form only for 1-12 h and 0-59 min; anything else ("7:75 PM", "0:30 AM") falls through to the 24-hour check
+  if (m && Number(m[1]) >= 1 && Number(m[1]) <= 12 && Number(m[2] || 0) <= 59) return ((Number(m[1]) % 12) + (m[3].toUpperCase() === 'PM' ? 12 : 0)) * 60 + Number(m[2] || 0);
   const h = /\b([01]?\d|2[0-3]):([0-5]\d)\b/.exec(t || '');
   return h ? Number(h[1]) * 60 + Number(h[2]) : null;
 }

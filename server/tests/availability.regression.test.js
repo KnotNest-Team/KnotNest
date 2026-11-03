@@ -38,6 +38,14 @@ await t('a range uses its first time; empty or missing text has no time', () => 
   assert.equal(startMinutes('10:00 AM - 2:00 PM'), 600);
   assert.equal(startMinutes(''), null); assert.equal(startMinutes(undefined), null); assert.equal(startMinutes(null), null);
 });
+await t('impossible 12-hour times are not read (the event then holds the whole day)', () => {
+  assert.equal(startMinutes('7:75 PM'), null); assert.equal(startMinutes('99:99 PM'), null);
+  assert.equal(startMinutes('12:60 PM'), null); assert.equal(startMinutes('100 PM'), null);
+  assert.deepEqual(slotFor('7:75 PM', 4), { start: null, end: null });
+});
+await t('hour 0 or 13-23 written with AM/PM still reads as a 24-hour time', () => {
+  assert.equal(startMinutes('0:30 AM'), 30); assert.equal(startMinutes('00:00 AM'), 0); assert.equal(startMinutes('13:30 PM'), 810);
+});
 await t('slot length follows the setting (fractions allowed) and never passes midnight', () => {
   assert.deepEqual(slotFor('10:00 AM', 1.5), { start: 600, end: 690 });
   assert.deepEqual(slotFor('10:00 AM'), { start: 600, end: 840 }, 'default 4 hours');
@@ -68,6 +76,11 @@ await t('each wanted slot is checked: one free and one taken gives one conflict'
 await t('the conflict message names the clashing booking time', () => {
   const v = { unavailableDates: [], bookedSlots: [slot(D1, 720, 750, 'other')] };
   assert.equal(conflictsWith(v, want([slot(D1, 700, 800)]))[0].why, 'booked 12:00 PM to 12:30 PM');
+});
+await t('a slot that runs to midnight ends at 12:00 AM, and one at midnight starts at 12:00 AM', () => {
+  const late = { unavailableDates: [], bookedSlots: [slot(D1, 1320, 1440, 'other'), slot(D2, 0, 120, 'other')] };
+  assert.equal(conflictsWith(late, want([slot(D1, 1380, 1440)]))[0].why, 'booked 10:00 PM to 12:00 AM');
+  assert.equal(conflictsWith(late, want([slot(D2, 60, 90)]))[0].why, 'booked 12:00 AM to 2:00 AM');
 });
 
 console.log('Whole-day holds');
